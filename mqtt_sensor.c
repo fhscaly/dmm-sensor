@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "C:\Program Files\mosquitto\devel\mosquitto.h"
-#include "D:\json-c\json.h"
+#include <mosquitto.h>
+#include <json-c/json.h>
 #include <time.h>
 
 #define mqtt_host "localhost"
@@ -115,7 +115,7 @@ char* my_payload( )
     return (char *) json_object_to_json_string(jobj);
 }
 
-void my_disconnect_callback(struct mosquitto *mosq, void *obj, int rc, const mosquitto_property *properties)
+void my_disconnect_callback(struct mosquitto *mosq, void *obj, int rc)
 {
     connected = false;
 }
@@ -132,7 +132,7 @@ int my_publish(struct mosquitto *mosq, int *mid, const char *topic, int payloadl
 }
 
 
-void my_connect_callback(struct mosquitto *mosq, void *obj, int result, int flags, const mosquitto_property *properties)
+void my_connect_callback(struct mosquitto *mosq, void *obj, int result, int flags )
 {
     int rc = MOSQ_ERR_SUCCESS;
 
@@ -160,21 +160,18 @@ void my_connect_callback(struct mosquitto *mosq, void *obj, int result, int flag
                     case MOSQ_ERR_PAYLOAD_SIZE:
                         fprintf(stderr, "Error: Message payload is too large.\n");
                         break;
-                    case MOSQ_ERR_QOS_NOT_SUPPORTED:
-                        fprintf(stderr, "Error: Message QoS not supported on broker, try a lower QoS.\n");
-                        break;
                  }
             mosquitto_disconnect(mosq);
         }
     }
 
 
-void my_publish_callback(struct mosquitto *mosq, void *obj, int mid, int reason_code, const mosquitto_property *properties)
+void my_publish_callback(struct mosquitto *mosq, void *obj, int mid, int reason_code )
 {
 
     last_mid_sent = mid;
     if(reason_code > 127){
-        fprintf(stderr, "Warning: Publish %d failed: %s.\n", mid, mosquitto_reason_string(reason_code));
+        fprintf(stderr, "Warning: Publish %d failed: %d.\n", mid, reason_code);
     }
     publish_count++;
 
@@ -210,6 +207,7 @@ int main (void) {
         mosquitto_publish_callback_set(mosq, my_publish_callback);
     } else
     {
+        fprintf(stderr, "No msq connection established.\n");
         mosquitto_lib_cleanup();
     }
 }
