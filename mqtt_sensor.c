@@ -77,7 +77,7 @@ float get_next_values() {
 }
 
 
-char* my_payload( )
+const char* my_payload( )
 {
     /*
      * payload = {
@@ -97,7 +97,7 @@ char* my_payload( )
 
     struct json_object *jobj = json_object_new_object();
 
-    json_object_object_add(jobj,"timestamp",json_object_new_string(ctime((const time_t *) time(NULL))));
+    //json_object_object_add(jobj,"timestamp",json_object_new_string(ctime((const time_t *) time(NULL))));
     json_object_object_add(jobj,"warehouseId", json_object_new_string("XX00815"));
     json_object_object_add(jobj,"assetId",json_object_new_int(-1));
     json_object_object_add(jobj,"assetName",json_object_new_string("temp1"));
@@ -112,7 +112,7 @@ char* my_payload( )
 
     json_object_object_add(jobj,"values",jobj2);
 
-    return (char *) json_object_to_json_string(jobj);
+    return json_object_to_json_string(jobj);
 }
 
 void my_log_callback(struct mosquitto *mosq, void *obj, int level, const char *str)
@@ -132,7 +132,7 @@ int my_publish(struct mosquitto *mosq, int *mid, const char *topic, int payloadl
 {
     ready_for_repeat = false;
     if( first_publish == false){
-        return mosquitto_publish(mosq, mid, NULL, payloadlen, payload, qos, retain);
+	    return mosquitto_publish(mosq, mid, NULL, payloadlen, payload, qos, retain);
     }else{
         first_publish = false;
         return mosquitto_publish(mosq, mid, topic, payloadlen, payload, qos, retain);
@@ -223,6 +223,22 @@ int main (void) {
 		fprintf(stderr, "Unable to connect.\n");
 	   mosquitto_lib_cleanup();
 		return 1;
+	}
+
+	mosquitto_loop(mosq,100,-1 );
+
+	while(1) {
+	  const char * message = my_payload();
+	  //my_publish(mosq, 1, "SENSOR_DATA", 5, "HELLOO", 0, true);
+	  //my_publish(mosq, &last_mid_sent, "SENSOR_DATA", strlen(message) , message, 0, true);
+	  mosquitto_publish(mosq, &last_mid_sent, "SENSOR_DATA", strlen(message) , message, 1, false);
+	  //mosquitto_publish(mosq, &last_mid_sent, "SENSOR_DATA", 5 , "HELLO", 1, false);
+
+	  last_mid_sent++;
+	  sleep(3);
+
+
+	//mosquitto_publish(mosq, &message_count, "SENSOR_DATA", 5, "HELLO", 0, true);
 	}
 
 	mosquitto_destroy(mosq);
