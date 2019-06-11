@@ -9,7 +9,7 @@
 #include <json-c/json.h>
 #include <time.h>
 
-#define mqtt_host "localhost"
+#define mqtt_host "192.168.0.115"
 #define mqtt_port 1883
 
 /* Global variables for use in callbacks. See sub_client.c for an example of
@@ -115,8 +115,16 @@ char* my_payload( )
     return (char *) json_object_to_json_string(jobj);
 }
 
+void my_log_callback(struct mosquitto *mosq, void *obj, int level, const char *str)
+{
+
+	printf("%s\n", str);
+}
+
+
 void my_disconnect_callback(struct mosquitto *mosq, void *obj, int rc)
 {
+    fprintf(stderr, "DISCONNECT CALLBACK!.\n");
     connected = false;
 }
 
@@ -134,6 +142,7 @@ int my_publish(struct mosquitto *mosq, int *mid, const char *topic, int payloadl
 
 void my_connect_callback(struct mosquitto *mosq, void *obj, int result, int flags )
 {
+    fprintf(stderr, "CONNECT CALLBACK!.\n");
     int rc = MOSQ_ERR_SUCCESS;
 
     if(!result){
@@ -168,6 +177,7 @@ void my_connect_callback(struct mosquitto *mosq, void *obj, int result, int flag
 
 void my_publish_callback(struct mosquitto *mosq, void *obj, int mid, int reason_code )
 {
+    fprintf(stderr, "PUBLISH CALLBACK!.\n");
 
     last_mid_sent = mid;
     if(reason_code > 127){
@@ -190,6 +200,7 @@ int main (void) {
     // MQT Handling
     char clientid[24];
     struct mosquitto *mosq;
+    int keepalive = 60;
 
     // inital msoquitto lib
     mosquitto_lib_init();
@@ -202,10 +213,25 @@ int main (void) {
     mosq = mosquitto_new(clientid, true, 0);
 
     if ( mosq) {
+
+	mosquitto_log_callback_set(mosq, my_log_callback);
         mosquitto_connect_callback_set(mosq, my_connect_callback);
         mosquitto_disconnect_callback_set(mosq, my_disconnect_callback);
         mosquitto_publish_callback_set(mosq, my_publish_callback);
-    } else
+
+        if(mosquitto_connect(mosq, "localhost", mqtt_port, keepalive)){
+		fprintf(stderr, "Unable to connect.\n");
+	   mosquitto_lib_cleanup();
+		return 1;
+	}
+
+	mosquitto_destroy(mosq);
+	mosquitto_lib_cleanup();
+        fprintf(stderr, "ENDE!!!!!!!!!!!!!!!!!!!!!!!.\n");
+        return 0;
+	//mosquitto_loop_forever(mosq, -1, 1); 
+
+   } else
     {
         fprintf(stderr, "No msq connection established.\n");
         mosquitto_lib_cleanup();
