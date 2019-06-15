@@ -1,6 +1,7 @@
+#include <stdint.h>
+#include <time.h>
 
-#include "D:\json-c\json.h"
-//#include <json-c/json.h>
+#include <json-c/json.h>
 #include "data_format_util.h"
 #include "message_protocol.h"
 
@@ -19,13 +20,18 @@ const char* build_json( Message_header * message ) {
     for ( i = 0; i<message->value_count; i++) {
 
         struct json_object *jobji = json_object_new_object();
+        struct json_object *jarray = json_object_new_array();
 
         void * value = message->values[i+1].value;
+        double *valuee = (double*)value;
+
         json_object_object_add(jobji,"key",json_object_new_string(message->values[i+1].key));
         json_object_object_add(jobji,"type",json_object_new_string(message->values[i+1].type));
-        //json_object_object_add(jobji,"value",json_object_new_double(message->values[i+1].value);
+        json_object_object_add(jobji,"value",json_object_new_double(*valuee));
 
-        json_object_object_add(jobj,"values",jobji);
+        json_object_array_add(jarray, jobji);
+
+        json_object_object_add(jobj,"values",jarray);
     }
 
     return json_object_to_json_string(jobj);

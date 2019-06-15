@@ -1,12 +1,12 @@
 
-#include <sys/types.h>
 #include <stdlib.h>
+#include <sys/types.h>
 #include <time.h>
 #include "message_protocol.h"
 
 
 
-void add_value_to_message(Message_header *header, char * key, char * type, void* value)
+void add_value_to_message(Message_header *header, char *key, char *type, void *value)
 {
     header->value_count++;
     // add new value - reallocate memory

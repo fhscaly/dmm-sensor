@@ -7,14 +7,15 @@
 #include <time.h>
 
 
-#include "C:\Program Files\mosquitto\devel\mosquitto.h"
-#include "D:\json-c\json.h"
-//#include <mosquitto.h>
-//#include <json-c/json.h>
+//#include "C:\Program Files\mosquitto\devel\mosquitto.h"
+//#include "D:\json-c\json.h"
+#include <mosquitto.h>
+#include <json-c/json.h>
+#include <stdbool.h>
 
-#include "sensor.h"
 #include "message_protocol.h"
 #include "data_format_util.h"
+#include "sensor.h"
 
 #define mqtt_host "192.168.0.115"
 #define mqtt_port 1883
@@ -49,8 +50,9 @@ const char* my_payload( ) {
 
     Message_header *message = create_message_header("FH00017", -1, "HOME:TS001", "PUBLISH", 30);
 
-    double temp_data = get_next_value_from_sensor();
-    add_value_to_message(message, "data", "FLOAT", &temp_data);
+    //double temp_data = get_next_value_from_sensor();
+    //add_value_to_message(message, "data", "DOUBLE", &temp_data);
+    add_value_to_message(message, "data", "DOUBLE", 25);
 
     return build_json(message);
 }

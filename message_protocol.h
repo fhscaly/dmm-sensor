@@ -1,7 +1,11 @@
 
+#ifndef MESSAGE_PROTOCOL_H__
+#define MESSAGE_PROTOCOL_H__
+
+#include <time.h>
 
 /*
- *  TODO: take description from MQTT message protocoll
+ *  TODO: take description from MQTT message protocol
  */
 typedef struct {
     char *key;
@@ -10,7 +14,7 @@ typedef struct {
 } Message_value;
 
 /*
- *  TODO: take description from MQTT message protocoll
+ *  TODO: take description from MQTT message protocol
  */
 typedef struct {
     time_t time;
@@ -32,5 +36,6 @@ Message_header* create_message_header(char *warehouse_id, int asset_id, char *as
 /*
  *  Adding value to message
  */
-void add_value_to_message( Message_header *header, char * key, char * type, void* value);
+void add_value_to_message(Message_header *header, char *key, char *type, void *value);
 
+#endif /* MESSAGE_PROTOCOL_H__*/
