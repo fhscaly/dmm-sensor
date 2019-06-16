@@ -19,7 +19,7 @@ const char* build_json( Message_header * message ) {
 
     int i = 0;
     struct json_object *jarray = json_object_new_array();
-    for ( i = 0; i<message->value_count; i++) {
+    for ( i = 0; i<message->value_count-1; i++) {
 
         struct json_object *jobji = json_object_new_object();
 
@@ -32,7 +32,7 @@ const char* build_json( Message_header * message ) {
     json_object_object_add(jobj,"values",jarray);
 
     // free the memory
-    free(message);
+    //free(message);
 
     return json_object_to_json_string(jobj);
 }
