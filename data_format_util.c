@@ -16,23 +16,23 @@ const char* build_json( Message_header * message ) {
     json_object_object_add(jobj,"eventType",json_object_new_string(message->event_type));
     json_object_object_add(jobj,"refreshInterval",json_object_new_int(message->refresh_interval));
 
+
     int i = 0;
+    struct json_object *jarray = json_object_new_array();
     for ( i = 0; i<message->value_count; i++) {
 
         struct json_object *jobji = json_object_new_object();
-        struct json_object *jarray = json_object_new_array();
 
-        void * value = message->values[i+1].value;
-        double *valuee = (double*)value;
-
-        json_object_object_add(jobji,"key",json_object_new_string(message->values[i+1].key));
-        json_object_object_add(jobji,"type",json_object_new_string(message->values[i+1].type));
-        json_object_object_add(jobji,"value",json_object_new_double(*valuee));
+        json_object_object_add(jobji,"key",json_object_new_string(message->values[i].key));
+        json_object_object_add(jobji,"type",json_object_new_string(message->values[i].type));
+        json_object_object_add(jobji,"value",json_object_new_double(*(double*)message->values[i].value));
 
         json_object_array_add(jarray, jobji);
-
-        json_object_object_add(jobj,"values",jarray);
     }
+    json_object_object_add(jobj,"values",jarray);
+
+    // free the memory
+    free(message);
 
     return json_object_to_json_string(jobj);
 }

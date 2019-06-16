@@ -52,7 +52,8 @@ const char* my_payload( ) {
 
     //double temp_data = get_next_value_from_sensor();
     //add_value_to_message(message, "data", "DOUBLE", &temp_data);
-    add_value_to_message(message, "data", "DOUBLE", 25);
+    add_value_to_message(message, "data", "DOUBLE", "5");
+    add_value_to_message(message, "data2", "FLOAT", "4");
 
     return build_json(message);
 }

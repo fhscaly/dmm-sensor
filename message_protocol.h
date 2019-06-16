@@ -2,6 +2,8 @@
 #ifndef MESSAGE_PROTOCOL_H__
 #define MESSAGE_PROTOCOL_H__
 
+#define MAX_VALUE_SIZE 24
+
 #include <time.h>
 
 /*
