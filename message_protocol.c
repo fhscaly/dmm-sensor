@@ -17,7 +17,7 @@ void add_value_to_message(Message_header *header, char *key, char *type, void *v
     header->value_count++;
 
     // pointer arithmetic - select the value to add
-    Message_value *mv = header->values + header->value_count;
+    Message_value *mv = header->values + header->value_count -1;
     mv->key = key;
     mv->type = type;
     mv->value = value;
