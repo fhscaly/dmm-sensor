@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <wiringPi.h>
+
 #include "sensor.h"
 
 float sensor_read() {
@@ -34,6 +36,7 @@ float sensor_read() {
         return 1;
     }
 
+
     // Assemble path to OneWire device
     sprintf(devPath, "%s/%s/w1_slave", path, dev);
 
@@ -45,11 +48,31 @@ float sensor_read() {
         perror ("Couldn't open the w1 device.");
         return 1;
     }
+
+
+    // start wiringPI API
+    if (wiringPiSetup() == -1)
+    {	    
+        perror ("Couldn't open the wiringPi");
+        return 1;
+    }
+
+    // mark GPIO 17 as output ( WiringPi Pin 0 )
+    pinMode(0, OUTPUT);
+
+    // LED on
+    digitalWrite(0, 1);
+    delay(100);
+
     while((read(fd, buf, 256)) > 0)
     {
         strncpy(tmpData, strstr(buf, "t=") + 2, 5);
+        
+        //LED off	
+        digitalWrite(0, 0);
+        delay(100);
+
         // convert to float
-	
        return strtof(tmpData, NULL)/1000;
     }
     close(fd);
