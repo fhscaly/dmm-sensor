@@ -7,8 +7,8 @@
 
 #include "sensor.h"
 
-double get_next_value_from_sensor() {
-    DIR *dir;
+float sensor_read() {
+        DIR *dir;
     struct dirent *dirent;
     char dev[16];      // Dev ID
     char devPath[128]; // Path to device
@@ -49,7 +49,7 @@ double get_next_value_from_sensor() {
     {
         strncpy(tmpData, strstr(buf, "t=") + 2, 5);
         // convert to double
-        return strtod(tmpData, NULL);
+        return strtof(tmpData, NULL);
     }
     close(fd);
     return 0;

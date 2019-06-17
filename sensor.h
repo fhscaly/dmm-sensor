@@ -5,6 +5,6 @@
  * read and return current value from sensor
  * sensor: OneWire DS18B20 temperature sensor
  */
-double get_next_value_from_sensor();
+float sensor_read();
 
 #endif /* SENSOR_H__ */
