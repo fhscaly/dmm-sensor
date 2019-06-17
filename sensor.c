@@ -48,8 +48,9 @@ float sensor_read() {
     while((read(fd, buf, 256)) > 0)
     {
         strncpy(tmpData, strstr(buf, "t=") + 2, 5);
-        // convert to double
-        return strtof(tmpData, NULL);
+        // convert to float
+	
+       return strtof(tmpData, NULL)/1000;
     }
     close(fd);
     return 0;
