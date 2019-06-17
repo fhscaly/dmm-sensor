@@ -6,14 +6,12 @@
 
 
 
-void add_value_to_message(Message_header *header, char *key, char *type, void *value)
+void add_value_to_message(Message_header *header, char *key, char *type, char *value)
 {
-    if ( header->value_count >= 1) {
-
-        // add new value - reallocate memory
-        header->values = realloc(header->values, sizeof(Message_value) * header->value_count +1);
-    }
-
+    /* TODO
+     * may reallocate memory of header->values to support more than one value in values
+     * For now only one value are necessary
+     */
     header->value_count++;
 
     // pointer arithmetic - select the value to add
