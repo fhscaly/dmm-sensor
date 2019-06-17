@@ -23,12 +23,12 @@ const char* my_payload( ) {
 
     Message_header *message = create_message_header("FH00017", -1, "HOME:TS001", "PUBLISH", refresh_interval);
 
-    //float temp_data = sensor_read();
-    //char value[10];
-    //snprintf(value, sizeof(value), "%f", temp_data);
+    float temp_data = sensor_read();
+    char value[10];
+    snprintf(value, sizeof(value), "%f", temp_data);
 
-    //add_value_to_message(message, "data", "FLOAT", value);
-    add_value_to_message(message, "data", "FLOAT", "5");
+    add_value_to_message(message, "data", "FLOAT", value);
+    //add_value_to_message(message, "data", "FLOAT", "5");
 
     return build_json(message);
 }
@@ -88,7 +88,8 @@ void my_publish_callback(struct mosquitto *mosq, void *obj, int mid, int reason_
 int main(int argc, char* argv[]) {
 
     if ( argc  != 2  ) {
-        printf("wrong usage: arg1 = IP mqtt server");
+        printf("wrong usage: arg1 = IP mqtt server\n");
+	return 1;
     }
 
     // MQT Handling
@@ -108,7 +109,7 @@ int main(int argc, char* argv[]) {
 
     if ( mosq) {
 
-	    mosquitto_log_callback_set(mosq, my_log_callback);
+	mosquitto_log_callback_set(mosq, my_log_callback);
         mosquitto_connect_callback_set(mosq, my_connect_callback);
         mosquitto_disconnect_callback_set(mosq, my_disconnect_callback);
         mosquitto_publish_callback_set(mosq, my_publish_callback);
