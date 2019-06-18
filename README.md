@@ -111,7 +111,7 @@ The application reads data from the sensor every five seconds and publishes it w
     ```
 * **data types of message**
     * header
-    ```
+    ```c
     /*
      *  timestamp       -> timestamp of the event as UNIX Epoch milliseconds.
      *  warehouseId     -> Worldwide unique project number -> must be configurable!
