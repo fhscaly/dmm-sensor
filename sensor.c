@@ -70,7 +70,7 @@ float sensor_read() {
         
         //LED off	
         digitalWrite(0, 0);
-        delay(100);
+        delay(50);
 
         // convert to float
        return strtof(tmpData, NULL)/1000;
