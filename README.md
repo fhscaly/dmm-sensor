@@ -45,7 +45,16 @@ The application reads data from the sensor every five seconds and publishes it w
     sudo modprobe w1–gpio
     sudo modprobe w1-therm 
     ```
+    * the sensor writes now the data into the file `/sys/bus/w1/devices/w1_bus_master1/28-*/w1_slave`
+        * for each sensor a "`28-`" directory will be created.
+        
+    * data should look like:
+    ```
+    6a 01 55 05 7f 7e 81 66 1d : crc=1d YES
+    6a 01 55 05 7f 7e 81 66 1d t=22625
 
+    ```
+        
 ### install mqtt sensor
 *  **get source code**
     * clone github repository
@@ -147,9 +156,14 @@ The application reads data from the sensor every five seconds and publishes it w
         char *value;
     } Message_value;
     ```
-    
+
+## Trouble Shooting
+
+* **Sensor data cannot be read**
+    * Directory `/sys/bus/w1/devices/w1_bus_master1/28-*` does not exits. 
 
     
     
-
+6b 01 55 05 7f 7e 81 66 5e : crc=5e YES
+6b 01 55 05 7f 7e 81 66 5e t=22687
 
