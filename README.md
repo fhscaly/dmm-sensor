@@ -162,8 +162,4 @@ The application reads data from the sensor every five seconds and publishes it w
 * **Sensor data cannot be read**
     * Directory `/sys/bus/w1/devices/w1_bus_master1/28-*` does not exits. 
 
-    
-    
-6b 01 55 05 7f 7e 81 66 5e : crc=5e YES
-6b 01 55 05 7f 7e 81 66 5e t=22687
 
