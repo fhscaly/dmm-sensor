@@ -12,7 +12,7 @@
 #include "data_format_util.h"
 #include "sensor.h"
 
-#define mqtt_topic "SENSOR/LOCAL/TEMPERATURE"
+#define mqtt_topic "sensors/HOME:TS001"
 #define mqtt_port 1883
 
 
