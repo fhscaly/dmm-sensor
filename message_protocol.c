@@ -1,7 +1,7 @@
 
 #include <stdlib.h>
 #include <sys/types.h>
-#include <time.h>
+#include <sys/time.h>
 #include "message_protocol.h"
 
 
@@ -23,9 +23,17 @@ void add_value_to_message(Message_header *header, char *key, char *type, char *v
 
 Message_header* create_message_header(char *warehouse_id, int asset_id, char *asset_name, char *event_type, int refresh_interval)
 {
+    struct timeval tv;
+
+    gettimeofday(&tv, NULL);
+
+    unsigned long long millisecondsSinceEpoch =
+	        (unsigned long long)(tv.tv_sec) * 1000 +
+		    (unsigned long long)(tv.tv_usec) / 1000;
+
     Message_header *mh = malloc(sizeof(Message_header));
 
-    mh->time = time(NULL);
+    mh->time = millisecondsSinceEpoch;
     mh->warehouse_id = warehouse_id;
     mh->asset_id = asset_id;
     mh->asset_name = asset_name;

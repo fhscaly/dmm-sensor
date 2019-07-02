@@ -28,7 +28,7 @@ typedef struct {
 
  */
 typedef struct {
-    time_t time;
+    unsigned long long time;
     char *warehouse_id;
     int asset_id;
     char *asset_name;

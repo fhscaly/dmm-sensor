@@ -15,7 +15,7 @@ float sensor_read() {
     char dev[16];      // Dev ID
     char devPath[128]; // Path to device
     char buf[256];     // Data from device
-    char tmpData[6];   // Temp C * 1000 reported by device
+    char tempData[6];   // Temp C * 1000 reported by device
     char path[] = "/sys/bus/w1/devices";
 
     dir = opendir (path);
@@ -62,18 +62,27 @@ float sensor_read() {
 
     // LED on
     digitalWrite(0, 1);
-    delay(100);
 
     while((read(fd, buf, 256)) > 0)
     {
-        strncpy(tmpData, strstr(buf, "t=") + 2, 5);
-        
+        strncpy(tempData, strstr(buf, "t=") + 2, 5);
+     
+        // to make sure that the tempData has only five digits	
+        tempData[5] = '\0'; 
+	 printf("TEMPDATA: %s \n", tempData);
+        	
         //LED off	
         digitalWrite(0, 0);
-        delay(50);
+
+	// For whatever reason, sometimes the string has six digits
+        //if  (len > 5) {
+	  //printf("STRING > 5: %s \n", tmpData);
+	  // cut last digit by replacing it with the null terminator
+	  //tmpData[len - 2] = '\0';
+//	}
 
         // convert to float
-       return strtof(tmpData, NULL)/1000;
+       return strtof(tempData, NULL)/1000;
     }
     close(fd);
     return 0;
