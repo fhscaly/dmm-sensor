@@ -69,17 +69,9 @@ float sensor_read() {
      
         // to make sure that the tempData has only five digits	
         tempData[5] = '\0'; 
-	 printf("TEMPDATA: %s \n", tempData);
         	
         //LED off	
         digitalWrite(0, 0);
-
-	// For whatever reason, sometimes the string has six digits
-        //if  (len > 5) {
-	  //printf("STRING > 5: %s \n", tmpData);
-	  // cut last digit by replacing it with the null terminator
-	  //tmpData[len - 2] = '\0';
-//	}
 
         // convert to float
        return strtof(tempData, NULL)/1000;
