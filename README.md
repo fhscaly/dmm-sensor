@@ -114,7 +114,7 @@ The application reads data from the sensor every five seconds and publishes it w
             "values": [{
             "key": "data",
             "type": "FLOAT",
-            "value": "25.250000"
+            "value": 25.25
             }]
          }
     ```
