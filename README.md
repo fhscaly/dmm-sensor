@@ -89,7 +89,7 @@ The application reads data from the sensor every five seconds and publishes it w
 ## usage
 * execute mqtt_sensor
 ```
-./mqt_sensor <IP of message broker>
+./mqt_sensor <IP of message broker> <Port of message broker>
 ```
 
 ## MQTT
